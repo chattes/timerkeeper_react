@@ -5,6 +5,7 @@ import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
 import { TaskStore } from "./Store/GlobalStore";
 import { Provider } from "mobx-react";
+import "./fonts/digital-7.ttf";
 
 ReactDOM.render(
   <Provider taskStore={TaskStore}>

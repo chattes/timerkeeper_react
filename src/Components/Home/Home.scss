@@ -1,15 +1,45 @@
 .project-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%
+	display: grid;
+	grid-template-rows:[details] 30% [button] 20% [clock] auto ;
+	width: 100%;
+	height: 100vh;
 }
 
 .project-input-holder {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
+	grid-row:details;
 }
+
+.button-container {
+	grid-row:button;
+	text-align: center;
+}
+
+.project-input {
+	color: black;
+  margin: 5px;
+}
+.project-input::placeholder {
+	color: black;
+	opacity: .5;
+}
+.project-legend {
+	color: cornflowerblue !important;
+}
+
+.xtra-large-button {
+	font-size: 110%;
+	border-radius:4px;
+	color: white;
+	background: mediumaquamarine;
+}
+
+.clock-container {
+	grid-row: auto;
+	text-align: center;
+	align-self: start;
+}
+
 
