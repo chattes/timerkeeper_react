@@ -3,10 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
+import { TaskStore } from "./Store/GlobalStore";
+import { Provider } from "mobx-react";
 
 ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+  <Provider taskStore={TaskStore}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );

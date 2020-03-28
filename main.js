@@ -1,15 +1,14 @@
 // Basic init
 const electron = require("electron");
-const { app, BrowserWindow, Notification } = electron;
+const { app, BrowserWindow, Notification, ipcMain, Tray } = electron;
 const path = require("path");
 const url = require("url");
-const { Tray, ipcMain } = electron;
 const WindowPosition = require("electron-window-position");
 
 // Let electron reloads by itself when webpack watches changes in ./app/
 if (process.env.ELECTRON_START_URL) {
   require("electron-reload")(__dirname, {
-    electron: path.join(__dirname, "node_modules", ".bin", "electron")
+    electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
 }
 
@@ -21,6 +20,7 @@ app.dock.hide();
 app.on("ready", () => {
   createTray();
   createWindow();
+  handleEvents();
 });
 
 createWindow = () => {
@@ -31,8 +31,8 @@ createWindow = () => {
     frame: false,
     // transparent: true,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   const startUrl =
@@ -40,7 +40,7 @@ createWindow = () => {
     url.format({
       pathname: path.join(__dirname, "./build/index.html"),
       protocol: "file:",
-      slashes: true
+      slashes: true,
     });
 
   window.loadURL(startUrl);
@@ -60,7 +60,7 @@ createWindow = () => {
   window.setPosition(position.x, position.y, false);
 
   // Open the DevTools.
-  // window.webContents.openDevTools();
+  window.webContents.openDevTools();
 };
 
 // Quit when all windows are closed.
@@ -113,12 +113,7 @@ const showWindow = () => {
 };
 
 const handleEvents = () => {
-  ipcMain.on("friendly-reminder", (event, arg) => {
-    let timerNotification = new Notification({
-      title: "Time Keeper",
-      subtitle: "Just Checking...",
-      body: `Still working on Task ${arg.task_name} ?`
-    });
-    setTimeout(() => timerNotification.show(), 2000);
+  ipcMain.on("record-time", (event, arg) => {
+    console.log("Timer Stopped :: Record Time", arg);
   });
 };
