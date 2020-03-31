@@ -5,6 +5,8 @@ const path = require("path");
 const url = require("url");
 const WindowPosition = require("electron-window-position");
 
+require("electron-debug")();
+
 // Let electron reloads by itself when webpack watches changes in ./app/
 if (process.env.ELECTRON_START_URL) {
   require("electron-reload")(__dirname, {
@@ -26,7 +28,7 @@ app.on("ready", () => {
 createWindow = () => {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   window = new BrowserWindow({
-    width: 0.1 * width,
+    width: 0.2 * width,
     height: 0.6 * height,
     frame: false,
     // transparent: true,
@@ -60,7 +62,7 @@ createWindow = () => {
   window.setPosition(position.x, position.y, false);
 
   // Open the DevTools.
-  window.webContents.openDevTools();
+  // window.webContents.openDevTools();
 };
 
 // Quit when all windows are closed.

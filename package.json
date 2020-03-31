@@ -32,6 +32,8 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "awesomplete": "^1.1.5",
+    "electron-debug": "^3.0.1",
     "electron-window-position": "^1.0.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",

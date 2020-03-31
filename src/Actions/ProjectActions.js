@@ -8,6 +8,14 @@ export const updateTaskName = action(({ name }) => {
   TaskStore.taskName = name;
 });
 
+export const updateRate = action(({ hourly_rate }) => {
+  TaskStore.hourly_rate = hourly_rate;
+});
+
+export const updateCurrency = action(({ currency }) => {
+  TaskStore.currency = currency;
+});
+
 export const startTimer = action(() => {
   TaskStore.timerInterval = setInterval(() => TaskStore.timeSpent++, 1000);
 });
