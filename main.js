@@ -4,6 +4,7 @@ const { app, BrowserWindow, Notification, ipcMain, Tray } = electron;
 const path = require("path");
 const url = require("url");
 const WindowPosition = require("electron-window-position");
+const { create, read, modify } = require("./electron_components/model");
 
 require("electron-debug")();
 
