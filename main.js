@@ -5,6 +5,7 @@ const path = require("path");
 const url = require("url");
 const WindowPosition = require("electron-window-position");
 const { save, read, modify } = require("./electron_components/model");
+const is = require("electron-is");
 
 require("electron-debug")();
 
@@ -18,7 +19,9 @@ if (process.env.ELECTRON_START_URL) {
 // To avoid being garbage collected
 let window = null;
 let tray = null;
-app.dock.hide();
+if (is.macOS()) {
+  app.dock.hide();
+}
 
 app.on("ready", () => {
   createTray();
@@ -26,17 +29,29 @@ app.on("ready", () => {
   handleEvents();
 });
 
-createWindow = () => {
+const createWindow = () => {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
-  window = new BrowserWindow({
-    width: 0.2 * width,
-    height: 0.6 * height,
-    frame: false,
-    // transparent: true,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
+  if (is.linux()) {
+    window = new BrowserWindow({
+      width: 500,
+      height: 800,
+      frame: false,
+      // transparent: true,
+      webPreferences: {
+        nodeIntegration: true,
+      },
+    });
+  } else {
+    window = new BrowserWindow({
+      width: 0.2 * width,
+      height: 0.6 * height,
+      frame: false,
+      // transparent: true,
+      webPreferences: {
+        nodeIntegration: true,
+      },
+    });
+  }
 
   const startUrl =
     process.env.ELECTRON_START_URL ||
@@ -59,8 +74,10 @@ createWindow = () => {
       window.hide();
     }
   });
-  let position = getWindowPosition();
-  window.setPosition(position.x, position.y, false);
+  if (!is.linux()) {
+    let position = getWindowPosition();
+    window.setPosition(position.x, position.y, false);
+  }
 
   // Open the DevTools.
   // window.webContents.openDevTools();
@@ -118,5 +135,6 @@ const showWindow = () => {
 const handleEvents = () => {
   ipcMain.on("record-time", (event, arg) => {
     console.log("Timer Stopped :: Record Time", arg);
+    save(arg);
   });
 };
