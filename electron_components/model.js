@@ -1,22 +1,19 @@
-const fs = require("fs");
 const fse = require("fs-extra");
 const path = require("path");
 const HOME_DIR = require("os").homedir();
-const DIR_PATH = path.join(HOME_DIR, "timekeeper");
 
-const create_dir = async () => {
+const save_data = async (data) => {
+  let data_to_save = [];
   try {
-    await fse.ensureDir(DIR_PATH);
-    console.log("Directory has been Created");
+    data_to_save = await read_data();
   } catch (error) {
-    console.log("Error Creating Directory", error);
+    console.log("Cannot read data");
   }
-};
-
-const save_data = async (timer_data) => {
+  console.log("DATA TO SAVE", data_to_save);
+  data_to_save = [...data_to_save, data];
   fse.outputJson(
     path.join(HOME_DIR, "timekeeper", "time.json"),
-    timer_data,
+    data_to_save,
     (err) => {
       if (err) {
         throw err;
@@ -26,12 +23,20 @@ const save_data = async (timer_data) => {
   );
 };
 
-const read_data = (timer_data) => {};
-
-const modify_data = (timer_data) => {};
+const read_data = async () => {
+  return fse
+    .readJson(path.join(HOME_DIR, "timekeeper", "time.json"))
+    .then((timer_data) => {
+      console.log("data read...", timer_data);
+      return timer_data;
+    })
+    .catch((error) => {
+      console.log("Unable to read data", error);
+      throw error;
+    });
+};
 
 module.exports = {
   save: save_data,
   read: read_data,
-  modify: modify_data,
 };
